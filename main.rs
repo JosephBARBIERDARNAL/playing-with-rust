@@ -1,30 +1,32 @@
 use std::collections::HashMap;
 
-/// Inserts a key-value pair into the hashmap or updates the value if the key exists.
-pub fn insert_or_update(map: &mut HashMap<String, String>, key: String, value: String) {
-    map.insert(key, value);
+type Collection = HashMap<String, Vec<String>>;
+
+pub fn add_animal_to_section(animal: &str, section: &str, registry: &mut Collection) {
+    let animals = registry.entry(section.to_string()).or_insert(Vec::new());
+
+    if !animals.contains(&animal.to_string()) {
+        animals.push(animal.to_string());
+    }
 }
 
-/// Retrieves the value associated with a key from the hashmap.
-pub fn get_value(map: &HashMap<String, String>, key: String) -> Option<String> {
-    map.get(&key).cloned()
+pub fn get_animals_in_section(section: &str, registry: &Collection) -> Vec<String> {
+    if let Some(animals) = registry.get(section) {
+        let mut animals = animals.clone();
+        animals.sort();
+        return animals;
+    } else {
+        return Vec::new();
+    }
 }
 
-// Example usage
-pub fn main() {
-    let mut store = HashMap::new();
+pub fn get_all_animals_sorted(registry: &Collection) -> Vec<String> {
+    let mut all_animals: Vec<String> = Vec::new();
 
-    // Insert a new key-value pair
-    insert_or_update(&mut store, "name".to_string(), "Alice".to_string());
+    for animal in registry.values() {
+        all_animals.extend_from_slice(animal.as_slice());
+    }
+    all_animals.sort();
 
-    // Update an existing key
-    insert_or_update(&mut store, "name".to_string(), "Bob".to_string());
-
-    // Retrieve the value by key
-    let value = get_value(&store, "name".to_string());
-    assert_eq!(value, Some("Bob".to_string()));
-
-    // Try to get a non-existent key
-    let missing = get_value(&store, "age".to_string());
-    assert_eq!(missing, None);
+    return all_animals;
 }
