@@ -1,0 +1,10 @@
+[package]
+name = "playing-with-rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[[bin]]
+name = "playing-with-rust"
+path = "main.rs"
