@@ -1,32 +1,53 @@
 use std::collections::HashMap;
 
-type Collection = HashMap<String, Vec<String>>;
+pub struct Student {
+    pub name: String,
+    pub grades: Vec<u8>,
+}
 
-pub fn add_animal_to_section(animal: &str, section: &str, registry: &mut Collection) {
-    let animals = registry.entry(section.to_string()).or_insert(Vec::new());
+pub struct StudentGrades {
+    pub students: HashMap<String, Student>,
+}
 
-    if !animals.contains(&animal.to_string()) {
-        animals.push(animal.to_string());
+impl StudentGrades {
+    pub fn new() -> Self {
+        Self {
+            students: HashMap::new(),
+        }
+    }
+
+    pub fn add_student(&mut self, name: &str) {
+        self.students.entry(name.to_string()).or_insert(Student {
+            name: name.to_string(),
+            grades: Vec::new(),
+        });
+    }
+
+    pub fn add_grade(&mut self, name: &str, grade: u8) {
+        let student: &mut Student = self.students.entry(name.to_string()).or_insert(Student {
+            name: name.to_string(),
+            grades: Vec::new(),
+        });
+
+        student.grades.push(grade)
+    }
+
+    pub fn get_grades(&self, name: &str) -> &[u8] {
+        &self.students.get(name).unwrap().grades
     }
 }
 
-pub fn get_animals_in_section(section: &str, registry: &Collection) -> Vec<String> {
-    if let Some(animals) = registry.get(section) {
-        let mut animals = animals.clone();
-        animals.sort();
-        return animals;
-    } else {
-        return Vec::new();
-    }
-}
+// Example usage
+pub fn main() {
+    let mut tracker = StudentGrades::new();
 
-pub fn get_all_animals_sorted(registry: &Collection) -> Vec<String> {
-    let mut all_animals: Vec<String> = Vec::new();
+    tracker.add_student("Alice");
+    tracker.add_student("Bob");
 
-    for animal in registry.values() {
-        all_animals.extend_from_slice(animal.as_slice());
-    }
-    all_animals.sort();
+    tracker.add_grade("Alice", 85);
+    tracker.add_grade("Alice", 90);
+    tracker.add_grade("Bob", 78);
 
-    return all_animals;
+    println!("{:?}", tracker.get_grades("Alice")); // [85, 90]
+    println!("{:?}", tracker.get_grades("Bob")); // [78]
 }
