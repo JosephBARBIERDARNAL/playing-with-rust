@@ -1,53 +1,28 @@
-use std::collections::HashMap;
-
-pub struct Student {
-    pub name: String,
-    pub grades: Vec<u8>,
+struct User {
+    username: String,
+    sign_in_count: u32,
+    active: bool,
 }
 
-pub struct StudentGrades {
-    pub students: HashMap<String, Student>,
-}
-
-impl StudentGrades {
-    pub fn new() -> Self {
-        Self {
-            students: HashMap::new(),
+impl User {
+    fn new(username: String) -> User {
+        User {
+            username,
+            sign_in_count: 0,
+            active: true,
         }
     }
-
-    pub fn add_student(&mut self, name: &str) {
-        self.students.entry(name.to_string()).or_insert(Student {
-            name: name.to_string(),
-            grades: Vec::new(),
-        });
+    fn deactivate(&mut self) {
+        self.active = false;
     }
-
-    pub fn add_grade(&mut self, name: &str, grade: u8) {
-        let student: &mut Student = self.students.entry(name.to_string()).or_insert(Student {
-            name: name.to_string(),
-            grades: Vec::new(),
-        });
-
-        student.grades.push(grade)
-    }
-
-    pub fn get_grades(&self, name: &str) -> &[u8] {
-        &self.students.get(name).unwrap().grades
+    fn is_active(&self) -> bool {
+        self.active
     }
 }
 
-// Example usage
-pub fn main() {
-    let mut tracker = StudentGrades::new();
-
-    tracker.add_student("Alice");
-    tracker.add_student("Bob");
-
-    tracker.add_grade("Alice", 85);
-    tracker.add_grade("Alice", 90);
-    tracker.add_grade("Bob", 78);
-
-    println!("{:?}", tracker.get_grades("Alice")); // [85, 90]
-    println!("{:?}", tracker.get_grades("Bob")); // [78]
+fn main() {
+    let mut jo = User::new("Joseph".to_string());
+    println!("{}", jo.is_active());
+    jo.deactivate();
+    println!("{}", jo.is_active());
 }
