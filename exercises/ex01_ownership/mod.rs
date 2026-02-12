@@ -6,8 +6,8 @@ pub fn exercise() {
 
     // TODO: Fix this function - x is moved but we try to use it again
     let x = vec![1, 2, 3];
-    let y = x;
-    // println!("x: {:?}", x);  // Uncomment and fix!
+    let y = &x;
+    println!("x: {:?}", x); // Uncomment and fix!
     println!("y: {:?}", y);
 
     // TODO: Complete this function
@@ -29,6 +29,12 @@ fn challenge_1() {
     // Pass s1 to takes_ownership
     // Print both s1 and s2 after the function call
     // You'll need to think about cloning!
+    let s1 = String::from("Python");
+    let s2 = String::from("Rust");
+
+    takes_ownership(s1.clone());
+
+    println!("{}, {}", s1, s2)
 }
 
 fn challenge_2() {
@@ -36,12 +42,15 @@ fn challenge_2() {
     // Create a function that takes ownership and returns the sum
     // Call that function and print the result
     // Try to access the original vector after - what happens?
+
+    let vector = vec![10, 20, 30, 40, 50];
+    let sum = sum_vector(vector);
+    println!("{}", sum);
 }
 
 // Helper function for challenge_2
 fn sum_vector(v: Vec<i32>) -> i32 {
-    // TODO: Implement this
-    0
+    v.iter().sum()
 }
 
 #[cfg(test)]

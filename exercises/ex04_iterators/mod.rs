@@ -16,11 +16,8 @@ fn challenge_1() {
     // Formula: F = C * 9/5 + 32
 
     let celsius = vec![0, 10, 20, 30, 40];
-    // let fahrenheit: Vec<i32> = celsius
-    //     .iter()
-    //     .map(|&c| ???)
-    //     .collect();
-    // println!("Fahrenheit: {:?}", fahrenheit);
+    let fahrenheit: Vec<i32> = celsius.iter().map(|&c| c * 9 / 5 + 32).collect();
+    println!("Fahrenheit: {:?}", fahrenheit);
 }
 
 fn challenge_2() {
@@ -29,8 +26,12 @@ fn challenge_2() {
     // square them, and collect the results
 
     let numbers = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    // let result: Vec<i32> = ???
-    // println!("Even squares: {:?}", result);
+    let result: Vec<i32> = numbers
+        .iter()
+        .filter(|&&x| x % 2 == 0)
+        .map(|x| x * x)
+        .collect();
+    println!("Even squares: {:?}", result);
 }
 
 fn challenge_3() {
@@ -41,10 +42,17 @@ fn challenge_3() {
     // - Count of scores above 80
 
     let scores = vec![75, 82, 90, 68, 95, 78, 88, 92];
-    // let sum: i32 = ???
-    // let mean: f64 = ???
-    // let high_scores = ???
-    // println!("Sum: {}, Mean: {:.2}, High scores: {}", sum, mean, high_scores);
+    let sum: i32 = scores.iter().sum();
+    let mean: f64 = scores.iter().sum::<i32>() as f64 / scores.iter().len() as f64;
+    let high_scores = scores
+        .iter()
+        .filter(|&&x| x > 80)
+        .collect::<Vec<&i32>>()
+        .len();
+    println!(
+        "Sum: {}, Mean: {:.2}, High scores: {}",
+        sum, mean, high_scores
+    );
 }
 
 fn challenge_4() {
@@ -52,13 +60,13 @@ fn challenge_4() {
     let numbers = vec![2, 4, 6, 8, 10, 12];
 
     // Find first number greater than 7
-    // let first_big = ???
+    let first_big = numbers.iter().find(|&&x| x > 7);
 
     // Check if any number is odd
-    // let has_odd = ???
+    let has_odd = numbers.iter().any(|&x| x % 2 == 0);
 
     // Check if all numbers are positive
-    // let all_positive = ???
+    let all_positive = numbers.iter().all(|&x| x > 0);
 }
 
 // Advanced challenge: Implement your own data processing pipeline
@@ -76,12 +84,12 @@ fn challenge_5() {
         ("Eve", 78),
     ];
 
-    // let passing: Vec<&str> = students
-    //     .iter()
-    //     .filter(???)
-    //     .map(???)
-    //     .collect();
-    // println!("Passing students: {:?}", passing);
+    let passing: Vec<&str> = students
+        .iter()
+        .filter(|(_, score)| *score >= 70)
+        .map(|&(name, _)| name)
+        .collect();
+    println!("Passing students: {:?}", passing);
 }
 
 // Helper for processing data
@@ -90,7 +98,11 @@ fn process_data(data: &Vec<i32>) -> Vec<i32> {
     // - Only values > 10
     // - Each multiplied by 2
     // - In descending order
-    vec![]
+    let mut d: Vec<i32> = data.iter().filter(|&&x| x > 10).map(|x| x * 2).collect();
+
+    d.sort_by(|a, b| b.cmp(a));
+
+    return d;
 }
 
 #[cfg(test)]
