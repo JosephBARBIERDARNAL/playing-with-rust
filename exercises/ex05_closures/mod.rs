@@ -15,11 +15,11 @@ fn challenge_1() {
     // 1. Takes a number and returns its square
     // 2. Takes two numbers and returns their sum
 
-    // let square = |???| ???;
-    // let add = |???, ???| ???;
+    let square = |x: i32| x * x;
+    let add = |x: i32, y: i32| x + y;
 
-    // println!("Square of 4: {}", square(4));
-    // println!("Sum of 3 and 5: {}", add(3, 5));
+    println!("Square of 4: {}", square(4));
+    println!("Sum of 3 and 5: {}", add(3, 5));
 }
 
 fn challenge_2() {
@@ -28,10 +28,10 @@ fn challenge_2() {
     // and multiplies input by it
 
     let multiplier = 3;
-    // let multiply = |???| ???;
+    let multiply = |x: i32| x * multiplier;
 
-    // println!("{}", multiply(4));  // Should print 12
-    // println!("{}", multiply(5));  // Should print 15
+    println!("{}", multiply(4)); // Should print 12
+    println!("{}", multiply(5)); // Should print 15
 }
 
 fn challenge_3() {
@@ -41,12 +41,12 @@ fn challenge_3() {
     let prices = vec![100.0, 50.0, 75.0, 120.0];
     let discount_rate = 0.20;
 
-    // let discounted: Vec<f64> = prices
-    //     .iter()
-    //     .map(|???| ???)  // Apply discount using closure
-    //     .collect();
+    let discounted: Vec<f64> = prices
+        .iter()
+        .map(|price| price - price * discount_rate) // Apply discount using closure
+        .collect();
 
-    // println!("Discounted prices: {:?}", discounted);
+    println!("Discounted prices: {:?}", discounted);
 }
 
 fn challenge_4() {
@@ -54,13 +54,14 @@ fn challenge_4() {
     // Create a counter closure that increments and returns a count
 
     let mut count = 0;
-    // let mut counter = || {
-    //     ???
-    // };
+    let mut counter = || {
+        count += 1;
+        return count;
+    };
 
-    // println!("{}", counter());  // 1
-    // println!("{}", counter());  // 2
-    // println!("{}", counter());  // 3
+    println!("{}", counter()); // 1
+    println!("{}", counter()); // 2
+    println!("{}", counter()); // 3
 }
 
 // Advanced: Using closures as function parameters
@@ -70,33 +71,33 @@ where
 {
     // TODO: Apply the operation to each element
     // and return a new vector
-    vec![]
+    data.iter().map(|&x| operation(x)).collect()
 }
 
 fn challenge_5() {
     let numbers = vec![1, 2, 3, 4, 5];
 
     // Use apply_to_vec with different closures
-    // let doubled = apply_to_vec(&numbers, |x| ???);
-    // let squared = apply_to_vec(&numbers, |x| ???);
+    let doubled = apply_to_vec(&numbers, |x| x + 1);
+    let squared = apply_to_vec(&numbers, |x| x * x);
 
-    // println!("Doubled: {:?}", doubled);
-    // println!("Squared: {:?}", squared);
+    println!("Doubled: {:?}", doubled);
+    println!("Squared: {:?}", squared);
 }
 
 // Advanced: Return a closure
 fn make_multiplier(factor: i32) -> impl Fn(i32) -> i32 {
     // TODO: Return a closure that multiplies by factor
     // Hint: use 'move' keyword
-    move |x| x  // Fix this
+    move |x| x * factor // Fix this
 }
 
 fn challenge_6() {
     let times_two = make_multiplier(2);
     let times_five = make_multiplier(5);
 
-    // println!("{}", times_two(10));   // 20
-    // println!("{}", times_five(10));  // 50
+    println!("{}", times_two(10)); // 20
+    println!("{}", times_five(10)); // 50
 }
 
 #[cfg(test)]
